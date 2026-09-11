@@ -20,24 +20,28 @@
         }
         .container {
             border: 2px dashed #ff3333;
-            padding: 30px;
-            background: #110000;
-            max-width: 90%;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            padding: 25px 20px;
+            background: #090909;
+            width: 85%;
+            max-width: 400px;
+            box-sizing: border-box;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            border-radius: 4px;
         }
-        h2 { font-size: 22px; letter-spacing: 2px; }
-        p { color: #b0b0b0; font-size: 15px; }
+        h2 { font-size: 20px; letter-spacing: 1px; margin-bottom: 5px; }
+        p { color: #b0b0b0; font-size: 14px; line-height: 1.5; }
         button {
-            background: #ff3333;
-            color: black;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
+            background: transparent;
+            color: #00ff66;
+            border: 2px solid #00ff66;
+            padding: 12px 25px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 15px #ff3333;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+            width: 100%;
         }
         .screen {
             display: none;
@@ -46,84 +50,146 @@
             background: black;
             z-index: 9999;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             text-align: left;
             padding: 20px;
             box-sizing: border-box;
+            overflow: hidden;
         }
-        #terminal-screen { color: #00ff00; font-size: 16px; align-items: flex-start; }
-        .skull-face {
-            font-size: 60px;
+        #terminal-screen { color: #00ff00; font-size: 15px; }
+        
+        /* رسائل التحذير العشوائية فوق وفي الأطراف */
+        .threat-box {
+            position: absolute;
+            background: #ff3333;
+            color: black;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 2px;
+            box-shadow: 0 0 8px #ff3333;
+            z-index: 10000;
+            display: none;
+        }
+
+        /* الوش المرعب الحقيقي اللي بيهتز وعيونو مربعات حمراء */
+        .scary-face-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            animation: intense-glitch 0.15s infinite;
+        }
+        .eyes-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+        }
+        .eye-box {
+            background: black;
+            border: 3px solid #ff0000;
             color: #ff0000;
-            text-shadow: 0 0 20px #ff0000;
-            margin-bottom: 10px;
-            animation: glitch 0.2s infinite;
+            font-size: 24px;
+            font-weight: bold;
+            width: 70px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px #ff0000;
+            text-shadow: 0 0 10px #ff0000;
         }
-        @keyframes glitch {
-            0% { transform: translate(0) }
-            20% { transform: translate(-5px, 5px) }
-            40% { transform: translate(-5px, -5px) }
-            60% { transform: translate(5px, 5px) }
-            80% { transform: translate(5px, -5px) }
-            100% { transform: translate(0) }
+        @keyframes intense-glitch {
+            0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-50%, -50%) translate(-8px, 6px) rotate(-1deg); }
+            40% { transform: translate(-50%, -50%) translate(6px, -6px) rotate(1deg); }
+            60% { transform: translate(-50%, -50%) translate(-4px, -4px) rotate(0deg); }
+            80% { transform: translate(-50%, -50%) translate(8px, 4px) rotate(1deg); }
+            100% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
         }
-        .binary-code { color: #00ff00; font-size: 18px; letter-spacing: 3px; margin-bottom: 20px; }
-        .takeover-text { color: #00ff00; font-size: 22px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #00ff00; }
-        #final-screen { background: black; color: white; text-align: center; direction: rtl; }
+        .binary-code { color: #00ff00; font-size: 16px; letter-spacing: 4px; margin-top: 10px; }
+        .takeover-text { color: #00ff00; font-size: 20px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #00ff00; margin-top: 10px; }
+        
+        #final-screen { 
+            background: black; 
+            color: white; 
+            text-align: center; 
+            direction: rtl; 
+            justify-content: center; 
+            align-items: center; 
+        }
     </style>
 </head>
 <body>
 
+    <!-- الواجهة الأولى: مطابقة للأصل (زر أخضر وإطار محكوم) -->
     <div class="container" id="step-1">
         <h2>[ TORVO - SEC ]</h2>
-        <p>KERNEL v4.2</p>
-        <p style="color: white; margin: 15px 0;">فحص استقرار السِيستم الأمنِي</p>
-        <p style="font-size: 12px;">النظام مشفر بالكامل. انقر على الزر ادناه لبدء تفريغ السجلات وفحص الحماية.</p>
+        <p style="letter-spacing: 1px; font-size: 13px;">[ KERNEL v4.2 ]</p>
+        <p style="color: white; margin: 15px 0; font-weight: bold;">فحص استقرار السيستم الأمني</p>
+        <p style="font-size: 13px;">النظام مشفر بالكامل. انقر على الزر ادناه لبدء تفريغ السجلات وفحص الحماية.</p>
         <button onclick="startPrank()">بدء فحص الثغرات</button>
     </div>
 
+    <!-- الواجهة الثانية: التيرمينال وتهديدات الأطراف العشوائية -->
     <div class="screen" id="step-2">
-        <div style="width: 100%; max-width: 600px;">
-            <h3 style="color: #ff3333; margin-bottom: 20px;">EXECUTING PAYLOAD...</h3>
-            <div id="terminal-logs"></div>
+        <div style="color: #ff3333; font-size: 14px; margin-bottom: 15px; font-weight: bold;">[!] KERNEL OVERFLOW DETECTED: EXECUTING PAYLOAD...</div>
+        <div id="terminal-logs"></div>
+        
+        <!-- مربعات التحذير العشوائية زي الأصلي -->
+        <div id="threat-1" class="threat-box" style="top: 15%; right: 10%;">[BROWSER THREAT] ⚠️ NEW TAB SPAWNED</div>
+        <div id="threat-2" class="threat-box" style="top: 45%5; left: 5%;">[CRITICAL] Memory leak detected</div>
+        <div id="threat-3" class="threat-box" style="top: 75%; right: 15%;">[SYS_ALERT] Bypass firewall</div>
+    </div>
+
+    <!-- الواجهة الثالثة: الوش المرعب المهتز والعيون الحمراء -->
+    <div class="screen" id="step-3" style="justify-content: center; align-items: center;">
+        <div class="scary-face-container">
+            <div class="eyes-row">
+                <div class="eye-box">999</div>
+                <div class="eye-box">ERR</div>
+            </div>
+            <div class="binary-code">1 0 1 0 1 0 1 0</div>
+            <div class="takeover-text">SYSTEM TAKEOVER SUCCESSFUL</div>
         </div>
     </div>
 
-    <div class="screen" id="step-3">
-        <div class="skull-face">999 💀 ERR</div>
-        <div class="binary-code">1 0 1 0 1 0 1 0</div>
-        <div class="takeover-text">SYSTEM TAKEOVER SUCCESSFUL</div>
-    </div>
-
+    <!-- الواجهة الرابعة: النهاية الكوميدية -->
     <div class="screen" id="step-4">
-        <h1 style="color: #ff3333; font-size: 32px; margin-bottom: 20px;">😂 😂 أبيض على الخضة العبقرية ! 😂</h1>
-        <p style="color: white; font-size: 20px; line-height: 1.8;">
+        <h1 style="color: #ff3333; font-size: 28px; margin-bottom: 15px;">😂 😂 يا نهار أبيض على الخضة العبقرية ! 😂</h1>
+        <p style="color: white; font-size: 18px; line-height: 1.6;">
             ولا هكر ولا السيستم اضرب . . دا مقلب تورڤو المدمر!<br><br>
             <span style="color: #ff3333; font-weight: bold;">اطمن تليفونك سليم 100% يا صاحبي 🔥😉</span>
         </p>
     </div>
 
+    <!-- الصوت الحقيقي للإنذار والمؤثرات -->
     <audio id="alarm-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
     <audio id="glitch-sound" src="https://actions.google.com/sounds/v1/science_fiction/scifi_laser_gun.ogg" preload="auto"></audio>
 
     <script>
         function startPrank() {
-            // 1. تشغيل الشاشة الكاملة
+            // تفعيل الشاشة الكاملة
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
 
-            // 2. تفعيل الهزاز بقوة في تليفون الضحية (يهتز لمدة ثواني متقطعة)
+            // اهتزاز قوي للتليفون
             if ("vibrate" in navigator) {
-                navigator.vibrate([500, 200, 500, 200, 1000, 300, 1500]);
+                navigator.vibrate([600, 200, 600, 200, 1200, 300, 2000]);
             }
 
-            // 3. تشغيل الصوت
+            // تشغيل صوت الإنذار
             let alarm = document.getElementById('alarm-sound');
             alarm.play().catch(e => console.log(e));
 
-            // الانتقال للواجهة الثانية
+            // الانتقال للتيرمينال
             document.getElementById('step-1').style.display = 'none';
             document.getElementById('step-2').style.display = 'flex';
 
@@ -132,7 +198,8 @@
                 "> [KEYSTROKE] Injecting payload into /dev/binder...",
                 "> [POPUP] Opening secure window #1 [OK]",
                 "> [POPUP] Opening secure window #2 [OK]",
-                "> [WARNING] Spawning background worker threads..."
+                "> [WARNING] Spawning background worker threads...",
+                "> [CRITICAL] Device memory buffer overflow imminent..."
             ];
 
             let logContainer = document.getElementById('terminal-logs');
@@ -141,38 +208,42 @@
             let logInterval = setInterval(() => {
                 if (index < logs.length) {
                     let p = document.createElement('p');
-                    p.style.margin = "8px 0";
+                    p.style.margin = "6px 0";
                     p.style.color = index === logs.length - 1 ? "#ffff33" : "#00ff00";
                     p.innerText = logs[index];
                     logContainer.appendChild(p);
                     index++;
+
+                    // إظهار تحذيرات عشوائية في الأطراف أثناء التيرمينال
+                    if(index === 2) document.getElementById('threat-1').style.display = 'block';
+                    if(index === 4) document.getElementById('threat-2').style.display = 'block';
+                    if(index === 5) document.getElementById('threat-3').style.display = 'block';
+
                 } else {
                     clearInterval(logInterval);
                     
-                    // تشغيل صوت جليتش مرعب عند ظهور الجمجمة
-                    let glitch = document.getElementById('glitch-sound');
-                    glitch.play().catch(e => console.log(e));
+                    // تشغيل صوت الجليتش المرعب
+                    let glitch = الانتقال_للواتس = document.getElementById('glitch-sound');
+                    document.getElementById('glitch-sound').play().catch(e => console.log(e));
 
-                    // الانتقال للواجهة الثالثة (الوش المخيف)
+                    // الانتقال للوش المرعب المهتز
                     setTimeout(() => {
                         document.getElementById('step-2').style.display = 'none';
                         document.getElementById('step-3').style.display = 'flex';
 
-                        // اهتزاز إضافي مع الوش المخيف
                         if ("vibrate" in navigator) {
-                            navigator.vibrate([1000, 500, 1000]);
+                            navigator.vibrate([1500, 500, 1500]);
                         }
 
-                        // الانتقال للواجهة الرابعة النهائية
+                        // الانتقال للنهاية الكوميدية
                         setTimeout(() => {
                             document.getElementById('step-3').style.display = 'none';
                             document.getElementById('step-4').style.display = 'flex';
                         }, 2500);
-                    }, 1500);
+                    }, 1200);
                 }
-            }, 600);
+            }, 500);
         }
     </script>
 </body>
-              </html>
-              
+</html>
