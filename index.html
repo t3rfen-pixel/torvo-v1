@@ -150,11 +150,6 @@
 </head>
 <body>
 
-    <!-- عنصر صوت مخفي مرتبط برابط الإنذار المباشر -->
-    <audio id="sirenAudio" preload="auto">
-        <source src="https://www.myinstants.com/media/sounds/police-siren_1.mp3" type="audio/mpeg">
-    </audio>
-
     <div class="container" id="step-1">
         <h2>[ TORVO - SEC ]</h2>
         <p style="letter-spacing: 1px; font-size: 13px;">[ KERNEL v4.2 ]</p>
@@ -197,11 +192,42 @@
     </div>
 
     <script>
+        // دالة إنذار عالي النبرة بتشتغل من كارت الصوت مباشرة بدون روابط خارجية
+        function playSiren() {
+            try {
+                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') { 
+                    audioCtx.resume(); 
+                }
+
+                // هكرنا الصوت عشان يفضل يزن ويدي إيحاء إنذار حقيقي متواصل
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                let now = audioCtx.currentTime;
+                
+                // تموجات تردد الإنذار (طلوع ونزول زي الإسعاف والبوليس)
+                for(let i = 0; i < 15; i++) {
+                    osc.frequency.setValueAtTime(500, now + (i * 0.4));
+                    osc.frequency.linearRampToValueAtTime(1500, now + (i * 0.4) + 0.2);
+                    osc.frequency.linearRampToValueAtTime(500, now + (i * 0.4) + 0.4);
+                }
+
+                gain.gain.setValueAtTime(0.7, now);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now);
+                osc.stop(now + 6.0); // يفضل شغال 6 ثواني كاملة مع المقلب
+            } catch(e) {
+                console.log("Web Audio error:", e);
+            }
+        }
+
         function startPrank() {
-            // تشغيل الصوت مباشرة من عنصر الـ HTML المخفي أول ما الزرار يتضغط
-            let siren = document.getElementById('sirenAudio');
-            siren.currentTime = 0;
-            siren.play().catch(e => console.log("Audio play error:", e));
+            // تشغيل الصوت فوراً أول ما يدوس الزرار من غير أي روابط تعطل الدنيا
+            playSiren();
 
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
@@ -224,7 +250,7 @@
             ];
 
             let logContainer = document.getElementById('terminal-logs');
-            let index = 0;
+            let index =0;
 
             let logInterval = setInterval(() => {
                 if (index < logs.length) {
@@ -260,5 +286,5 @@
         }
     </script>
 </body>
-        </html>
-        
+            </html>
+            
