@@ -59,21 +59,20 @@
         }
         #terminal-screen { color: #00ff00; font-size: 15px; }
         
-        /* رسائل التحذير العشوائية فوق وفي الأطراف */
         .threat-box {
             position: absolute;
             background: #ff3333;
             color: black;
             font-weight: bold;
-            font-size: 12px;
-            padding: 4px 8px;
+            font-size: 11px;
+            padding: 3px 6px;
             border-radius: 2px;
             box-shadow: 0 0 8px #ff3333;
             z-index: 10000;
             display: none;
         }
 
-        /* الوش المرعب الحقيقي اللي بيهتز وعيونو مربعات حمراء */
+        /* الوش المرعب الحقيقي (شكل مبتسم شيطاني مع العيون) */
         .scary-face-container {
             position: absolute;
             top: 50%;
@@ -84,51 +83,52 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            animation: intense-glitch 0.15s infinite;
+            animation: intense-glitch 0.12s infinite;
         }
-        .eyes-row {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 15px;
-        }
-        .eye-box {
-            background: black;
-            border: 3px solid #ff0000;
-            color: #ff0000;
-            font-size: 24px;
-            font-weight: bold;
-            width: 70px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 15px #ff0000;
-            text-shadow: 0 0 10px #ff0000;
-        }
-        @keyframes intense-glitch {
-            0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
-            20% { transform: translate(-50%, -50%) translate(-8px, 6px) rotate(-1deg); }
-            40% { transform: translate(-50%, -50%) translate(6px, -6px) rotate(1deg); }
-            60% { transform: translate(-50%, -50%) translate(-4px, -4px) rotate(0deg); }
-            80% { transform: translate(-50%, -50%) translate(8px, 4px) rotate(1deg); }
-            100% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
-        }
-        .binary-code { color: #00ff00; font-size: 16px; letter-spacing: 4px; margin-top: 10px; }
-        .takeover-text { color: #00ff00; font-size: 20px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #00ff00; margin-top: 10px; }
         
-        #final-screen { 
-            background: black; 
-            color: white; 
-            text-align: center; 
-            direction: rtl; 
-            justify-content: center; 
-            align-items: center; 
+        .scary-eyes {
+            display: flex;
+            gap: 45px;
+            margin-bottom: 25px;
         }
+        
+        .eye {
+            width: 45px;
+            height: 45px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 25px #ff0000, inset 0 0 10px #fff;
+            animation: blink 0.5s infinite alternate;
+        }
+
+        @keyframes blink {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.6; }
+        }
+
+        .evil-smile {
+            width: 180px;
+            height: 40px;
+            border-bottom: 6px solid #ff0000;
+            border-radius: 0 0 90px 90px;
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        @keyframes intense-glitch {
+            0% { transform: translate(-50%, -50%) translate(0, 0); }
+            25% { transform: translate(-50%, -50%) translate(-6px, 6px); }
+            50% { transform: translate(-50%, -50%) translate(6px, -6px); }
+            75% { transform: translate(-50%, -50%) translate(-4px, 4px); }
+            100% { transform: translate(-50%, -50%) translate(0, 0); }
+        }
+        
+        .binary-code { color: #00ff00; font-size: 16px; letter-spacing: 4px; margin-top: 5px; }
+        .takeover-text { color: #00ff00; font-size: 19px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #00ff00; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- الواجهة الأولى: مطابقة للأصل (زر أخضر وإطار محكوم) -->
     <div class="container" id="step-1">
         <h2>[ TORVO - SEC ]</h2>
         <p style="letter-spacing: 1px; font-size: 13px;">[ KERNEL v4.2 ]</p>
@@ -137,30 +137,27 @@
         <button onclick="startPrank()">بدء فحص الثغرات</button>
     </div>
 
-    <!-- الواجهة الثانية: التيرمينال وتهديدات الأطراف العشوائية -->
     <div class="screen" id="step-2">
         <div style="color: #ff3333; font-size: 14px; margin-bottom: 15px; font-weight: bold;">[!] KERNEL OVERFLOW DETECTED: EXECUTING PAYLOAD...</div>
         <div id="terminal-logs"></div>
         
-        <!-- مربعات التحذير العشوائية زي الأصلي -->
-        <div id="threat-1" class="threat-box" style="top: 15%; right: 10%;">[BROWSER THREAT] ⚠️ NEW TAB SPAWNED</div>
-        <div id="threat-2" class="threat-box" style="top: 45%5; left: 5%;">[CRITICAL] Memory leak detected</div>
-        <div id="threat-3" class="threat-box" style="top: 75%; right: 15%;">[SYS_ALERT] Bypass firewall</div>
+        <div id="threat-1" class="threat-box" style="top: 18%; right: 8%;">[BROWSER THREAT] ⚠️ NEW TAB SPAWNED</div>
+        <div id="threat-2" class="threat-box" style="top: 48%; left: 6%;">[CRITICAL] Memory leak detected</div>
+        <div id="threat-3" class="threat-box" style="top: 72%; right: 12%;">[SYS_ALERT] Firewall bypassed</div>
     </div>
 
-    <!-- الواجهة الثالثة: الوش المرعب المهتز والعيون الحمراء -->
     <div class="screen" id="step-3" style="justify-content: center; align-items: center;">
         <div class="scary-face-container">
-            <div class="eyes-row">
-                <div class="eye-box">999</div>
-                <div class="eye-box">ERR</div>
+            <div class="scary-eyes">
+                <div class="eye"></div>
+                <div class="eye"></div>
             </div>
+            <div class="evil-smile"></div>
             <div class="binary-code">1 0 1 0 1 0 1 0</div>
             <div class="takeover-text">SYSTEM TAKEOVER SUCCESSFUL</div>
         </div>
     </div>
 
-    <!-- الواجهة الرابعة: النهاية الكوميدية -->
     <div class="screen" id="step-4">
         <h1 style="color: #ff3333; font-size: 28px; margin-bottom: 15px;">😂 😂 يا نهار أبيض على الخضة العبقرية ! 😂</h1>
         <p style="color: white; font-size: 18px; line-height: 1.6;">
@@ -169,27 +166,48 @@
         </p>
     </div>
 
-    <!-- الصوت الحقيقي للإنذار والمؤثرات -->
-    <audio id="alarm-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
-    <audio id="glitch-sound" src="https://actions.google.com/sounds/v1/science_fiction/scifi_laser_gun.ogg" preload="auto"></audio>
-
     <script>
+        // دالة توليد صفارة إنذار حقيقية ومقلقة جداً بالجافاسكريبت
+        function playRealAlarm() {
+            try {
+                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let oscillator = audioCtx.createOscillator();
+                let gainNode = audioCtx.createGain();
+
+                oscillator.type = 'sawtooth'; // نبرة إنذار حادة
+                oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); // تردد عالي مرعب
+                
+                // تذبذب الصوت (يعمل صوت إنذار يرتفع وينخفض)
+                oscillator.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.2);
+                oscillator.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.4);
+
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                
+                // إيقاف وتكرار الإنذار مع الوش
+                setTimeout(() => { oscillator.stop(); }, 2500);
+            } catch(e) {
+                console.log("Audio not supported");
+            }
+        }
+
         function startPrank() {
-            // تفعيل الشاشة الكاملة
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
 
-            // اهتزاز قوي للتليفون
+            // اهتزاز قوي
             if ("vibrate" in navigator) {
-                navigator.vibrate([600, 200, 600, 200, 1200, 300, 2000]);
+                navigator.vibrate([700, 200, 700, 200, 1500, 300, 2000]);
             }
 
-            // تشغيل صوت الإنذار
-            let alarm = document.getElementById('alarm-sound');
-            alarm.play().catch(e => console.log(e));
+            // تشغيل صوت الإنذار الحقيقي
+            playRealAlarm();
 
-            // الانتقال للتيرمينال
             document.getElementById('step-1').style.display = 'none';
             document.getElementById('step-2').style.display = 'flex';
 
@@ -211,22 +229,19 @@
                     p.style.margin = "6px 0";
                     p.style.color = index === logs.length - 1 ? "#ffff33" : "#00ff00";
                     p.innerText = logs[index];
-                    logContainer.appendChild(p);
                     index++;
 
-                    // إظهار تحذيرات عشوائية في الأطراف أثناء التيرمينال
                     if(index === 2) document.getElementById('threat-1').style.display = 'block';
                     if(index === 4) document.getElementById('threat-2').style.display = 'block';
                     if(index === 5) document.getElementById('threat-3').style.display = 'block';
 
+                    logContainer.appendChild(p);
                 } else {
                     clearInterval(logInterval);
                     
-                    // تشغيل صوت الجليتش المرعب
-                    let glitch = الانتقال_للواتس = document.getElementById('glitch-sound');
-                    document.getElementById('glitch-sound').play().catch(e => console.log(e));
+                    // إعادة تشغيل الإنذار مع ظهور الوش المرعب
+                    playRealAlarm();
 
-                    // الانتقال للوش المرعب المهتز
                     setTimeout(() => {
                         document.getElementById('step-2').style.display = 'none';
                         document.getElementById('step-3').style.display = 'flex';
@@ -235,7 +250,6 @@
                             navigator.vibrate([1500, 500, 1500]);
                         }
 
-                        // الانتقال للنهاية الكوميدية
                         setTimeout(() => {
                             document.getElementById('step-3').style.display = 'none';
                             document.getElementById('step-4').style.display = 'flex';
