@@ -84,71 +84,62 @@
             animation: intense-glitch 0.1s infinite;
         }
 
-        .horns-row {
-            display: flex;
-            justify-content: space-between;
-            width: 110px;
-            margin-bottom: -8px;
-        }
-        .horn-left {
-            width: 0;
-            height: 0;
-            border-bottom: 35px solid #ff0000;
-            border-left: 8px solid transparent;
-            transform: rotate(-30deg);
-            filter: drop-shadow(0 0 8px #ff0000);
-        }
-        .horn-right {
-            width: 0;
-            height: 0;
-            border-bottom: 35px solid #ff0000;
-            border-right: 8px solid transparent;
-            transform: rotate(30deg);
-            filter: drop-shadow(0 0 8px #ff0000);
-        }
-        
         .scary-eyes {
             display: flex;
-            gap: 45px;
-            margin-bottom: 20px;
+            gap: 35px;
+            margin-bottom: 25px;
         }
         
         .eye {
-            width: 40px;
-            height: 40px;
+            width: 55px;
+            height: 55px;
             background: #ff0000;
             border-radius: 50%;
-            box-shadow: 0 0 20px #ff0000, inset 0 0 8px #fff;
+            box-shadow: 0 0 25px #ff0000, inset 0 0 10px #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #050505;
+            font-weight: bold;
+            font-size: 13px;
             animation: blink 0.3s infinite alternate;
         }
 
         @keyframes blink {
             0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(0.7); opacity: 0.5; }
+            100% { transform: scale(0.9); opacity: 0.7; }
         }
 
         .evil-smile {
-            width: 160px;
-            height: 35px;
+            width: 190px;
+            height: 40px;
             border-bottom: 5px solid #ff0000;
-            border-radius: 0 0 80px 80px;
-            box-shadow: 0 8px 15px rgba(255, 0, 0, 0.5);
-            margin-bottom: 20px;
+            border-radius: 0 0 95px 95px;
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @keyframes intense-glitch {
             0% { transform: translate(-50%, -50%) translate(0, 0); }
-            25% { transform: translate(-50%, -50%) translate(-8px, 6px); }
-            50% { transform: translate(-50%, -50%) translate(7px, -7px); }
-            75% { transform: translate(-50%, -50%) translate(-5px, 5px); }
+            25% { transform: translate(-50%, -50%) translate(-6px, 5px); }
+            50% { transform: translate(-50%, -50%) translate(5px, -6px); }
+            75% { transform: translate(-50%, -50%) translate(-4px, 4px); }
             100% { transform: translate(-50%, -50%) translate(0, 0); }
         }
         
-        .binary-code { color: #00ff00; font-size: 16px; letter-spacing: 4px; margin-top: 5px; }
-        .takeover-text { color: #00ff00; font-size: 19px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #00ff00; margin-top: 10px; }
+        .smile-binary { color: #00ff00; font-size: 14px; letter-spacing: 3px; font-weight: bold; }
+        .takeover-text { color: #00ff00; font-size: 18px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #00ff00; margin-top: 10px; }
     </style>
 </head>
 <body>
+
+    <!-- عنصر الصوت المخفي المضمون -->
+    <audio id="sirenAudio" preload="auto">
+        <source src="https://www.myinstants.com/media/sounds/police-siren_1.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="container" id="step-1">
         <h2>[ TORVO - SEC ]</h2>
@@ -169,16 +160,13 @@
 
     <div class="screen" id="step-3" style="justify-content: center; align-items: center;">
         <div class="scary-face-container">
-            <div class="horns-row">
-                <div class="horn-left"></div>
-                <div class="horn-right"></div>
-            </div>
             <div class="scary-eyes">
-                <div class="eye"></div>
-                <div class="eye"></div>
+                <div class="eye">999</div>
+                <div class="eye">ERR</div>
             </div>
-            <div class="evil-smile"></div>
-            <div class="binary-code">1 0 1 0 1 0 1 0</div>
+            <div class="evil-smile">
+                <div class="smile-binary">10101010</div>
+            </div>
             <div class="takeover-text">SYSTEM TAKEOVER SUCCESSFUL</div>
         </div>
     </div>
@@ -192,42 +180,11 @@
     </div>
 
     <script>
-        // دالة إنذار عالي النبرة بتشتغل من كارت الصوت مباشرة بدون روابط خارجية
-        function playSiren() {
-            try {
-                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') { 
-                    audioCtx.resume(); 
-                }
-
-                // هكرنا الصوت عشان يفضل يزن ويدي إيحاء إنذار حقيقي متواصل
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-
-                osc.type = 'sawtooth';
-                let now = audioCtx.currentTime;
-                
-                // تموجات تردد الإنذار (طلوع ونزول زي الإسعاف والبوليس)
-                for(let i = 0; i < 15; i++) {
-                    osc.frequency.setValueAtTime(500, now + (i * 0.4));
-                    osc.frequency.linearRampToValueAtTime(1500, now + (i * 0.4) + 0.2);
-                    osc.frequency.linearRampToValueAtTime(500, now + (i * 0.4) + 0.4);
-                }
-
-                gain.gain.setValueAtTime(0.7, now);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                osc.start(now);
-                osc.stop(now + 6.0); // يفضل شغال 6 ثواني كاملة مع المقلب
-            } catch(e) {
-                console.log("Web Audio error:", e);
-            }
-        }
-
         function startPrank() {
-            // تشغيل الصوت فوراً أول ما يدوس الزرار من غير أي روابط تعطل الدنيا
-            playSiren();
+            // تشغيل عنصر الصوت المخفي فوراً مع ضغطة الزرار
+            let siren = document.getElementById('sirenAudio');
+            siren.currentTime = 0;
+            siren.play().catch(e => console.log("Audio play error:", e));
 
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
@@ -250,7 +207,7 @@
             ];
 
             let logContainer = document.getElementById('terminal-logs');
-            let index =0;
+            let index = 0;
 
             let logInterval = setInterval(() => {
                 if (index < logs.length) {
@@ -286,5 +243,4 @@
         }
     </script>
 </body>
-            </html>
-            
+</html>
