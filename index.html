@@ -192,37 +192,11 @@
     </div>
 
     <script>
-        // دالة لتوليد صوت إنذار قوي ومرعب تلقائياً بدون الحاجة لأي ملفات خارجية
-        function var audio = new Audio("https://www.myinstants.com/media/sounds/alarm_1.mp3");
-audio.play().catch(function(error) { console.log("Audio blocked"); });
-        
-            try {
-                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-
-                osc.type = 'sawtooth';
-                let now = audioCtx.currentTime;
-                
-                osc.frequency.setValueAtTime(600, now);
-                osc.frequency.linearRampToValueAtTime(1400, now + 0.25);
-                osc.frequency.linearRampToValueAtTime(600, now + 0.5);
-                osc.frequency.linearRampToValueAtTime(1400, now + 0.75);
-
-                gain.gain.setValueAtTime(0.5, now);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                osc.start(now);
-                osc.stop(now + 1.2);
-            } catch(e) {
-                console.log(e);
-            }
-        }
-
         function startPrank() {
+            // اسم ملف الصوت المطلوب تشغيله: alarm_1.mp3
+            var audio = new Audio("https://www.myinstants.com/media/sounds/alarm_1.mp3");
+            audio.play().catch(function(error) { console.log("Audio blocked"); });
+
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
@@ -230,8 +204,6 @@ audio.play().catch(function(error) { console.log("Audio blocked"); });
             if ("vibrate" in navigator) {
                 navigator.vibrate([700, 200, 700, 200, 1500, 300, 2000]);
             }
-
-            playSiren();
 
             document.getElementById('step-1').style.display = 'none';
             document.getElementById('step-2').style.display = 'flex';
@@ -263,8 +235,6 @@ audio.play().catch(function(error) { console.log("Audio blocked"); });
                     logContainer.appendChild(p);
                 } else {
                     clearInterval(logInterval);
-                    
-                    playSiren();
 
                     setTimeout(() => {
                         document.getElementById('step-2').style.display = 'none';
@@ -284,5 +254,4 @@ audio.play().catch(function(error) { console.log("Audio blocked"); });
         }
     </script>
 </body>
-        </html>
-        
+</html>
