@@ -136,7 +136,7 @@
 </head>
 <body>
 
-    <!-- عنصر الصوت المخفي المضمون -->
+    <!-- عنصر الصوت المخفي للإنذار الحقيقي -->
     <audio id="sirenAudio" preload="auto">
         <source src="https://www.myinstants.com/media/sounds/police-siren_1.mp3" type="audio/mpeg">
     </audio>
@@ -180,11 +180,47 @@
     </div>
 
     <script>
+        // دالة كارت الصوت التوليدي الاحتياطي لضمان خروج الصوت غصب عن أي متصفح
+        function playFallbackSiren() {
+            try {
+                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                let now = audioCtx.currentTime;
+                
+                for(let i = 0; i < 15; i++) {
+                    osc.frequency.setValueAtTime(600, now + (i * 0.3));
+                    osc.frequency.linearRampToValueAtTime(1600, now + (i * 0.3) + 0.15);
+                    osc.frequency.linearRampToValueAtTime(600, now + (i * 0.3) + 0.3);
+                }
+
+                gain.gain.setValueAtTime(0.8, now);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now);
+                osc.stop(now + 5.0);
+            } catch(e) {
+                console.log("Fallback audio error:", e);
+            }
+        }
+
         function startPrank() {
-            // تشغيل عنصر الصوت المخفي فوراً مع ضغطة الزرار
+            // 1. تشغيل ملف الإنذار الخارجي المضمون
             let siren = document.getElementById('sirenAudio');
             siren.currentTime = 0;
-            siren.play().catch(e => console.log("Audio play error:", e));
+            siren.play().catch(e => {
+                console.log("Audio file blocked, firing backup siren...");
+                // 2. لو المتصفح منع الملف الخارجي، كارت الصوت الداخلي يشتغل فوراً بداله
+                playFallbackSiren();
+            });
+
+            // لو حابب تضمن إن كارت الصوت يشتغل دايماً معاه:
+            playFallbackSiren();
 
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
