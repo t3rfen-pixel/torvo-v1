@@ -71,7 +71,6 @@
             display: none;
         }
 
-        /* الوش المرعب بالقرنين الصغيرين والعيون والابتسامة */
         .scary-face-container {
             position: absolute;
             top: 50%;
@@ -85,32 +84,27 @@
             animation: intense-glitch 0.1s infinite;
         }
 
-        /* القرنين: خطوط حمراء متوهجة وصغيرة من غير ملء */
         .horns-row {
             display: flex;
             justify-content: space-between;
-            width: 130px;
-            margin-bottom: -5px;
+            width: 110px;
+            margin-bottom: -8px;
         }
         .horn-left {
             width: 0;
             height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 25px solid #ff0000;
-            transform: rotate(-25deg);
+            border-bottom: 35px solid #ff0000;
+            border-left: 8px solid transparent;
+            transform: rotate(-30deg);
             filter: drop-shadow(0 0 8px #ff0000);
-            background: transparent;
         }
         .horn-right {
             width: 0;
             height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 25px solid #ff0000;
-            transform: rotate(25deg);
+            border-bottom: 35px solid #ff0000;
+            border-right: 8px solid transparent;
+            transform: rotate(30deg);
             filter: drop-shadow(0 0 8px #ff0000);
-            background: transparent;
         }
         
         .scary-eyes {
@@ -197,23 +191,47 @@
         </p>
     </div>
 
-    <audio id="real-alarm" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
-
     <script>
+        // دالة لتوليد صوت إنذار قوي ومرعب تلقائياً بدون الحاجة لأي ملفات خارجية
+        function var audio = new Audio("https://www.myinstants.com/media/sounds/alarm_1.mp3");
+audio.play().catch(function(error) { console.log("Audio blocked"); });
+        
+            try {
+                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                let now = audioCtx.currentTime;
+                
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.linearRampToValueAtTime(1400, now + 0.25);
+                osc.frequency.linearRampToValueAtTime(600, now + 0.5);
+                osc.frequency.linearRampToValueAtTime(1400, now + 0.75);
+
+                gain.gain.setValueAtTime(0.5, now);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now);
+                osc.stop(now + 1.2);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+
         function startPrank() {
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
 
-            // اهتزاز قوي للتليفون
             if ("vibrate" in navigator) {
                 navigator.vibrate([700, 200, 700, 200, 1500, 300, 2000]);
             }
 
-            // تشغيل صوت الإنذار الأصلي
-            let alarm = document.getElementById('real-alarm');
-            alarm.currentTime = 0;
-            alarm.play().catch(e => console.log(e));
+            playSiren();
 
             document.getElementById('step-1').style.display = 'none';
             document.getElementById('step-2').style.display = 'flex';
@@ -246,10 +264,7 @@
                 } else {
                     clearInterval(logInterval);
                     
-                    // إعادة تشغيل الإنذار الأصلي مع ظهور الوش المرعب
-                    let alarmAgain = document.getElementById('real-alarm');
-                    alarmAgain.currentTime = 0;
-                    alarmAgain.play().catch(e => console.log(e));
+                    playSiren();
 
                     setTimeout(() => {
                         document.getElementById('step-2').style.display = 'none';
@@ -269,4 +284,5 @@
         }
     </script>
 </body>
-</html>
+        </html>
+        
