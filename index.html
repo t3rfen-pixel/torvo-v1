@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TORVO - SECURITY ACADEMY</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #ff3333;
+            font-family: monospace;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            border: 2px dashed #ff3333;
+            padding: 30px;
+            background: #110000;
+            max-width: 90%;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+        h2 { font-size: 22px; letter-spacing: 2px; }
+        p { color: #b0b0b0; font-size: 15px; }
+        button {
+            background: #ff3333;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #ff3333;
+        }
+        .screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: black;
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #terminal-screen { color: #00ff00; font-size: 16px; align-items: flex-start; }
+        .skull-face {
+            font-size: 60px;
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000;
+            margin-bottom: 10px;
+            animation: glitch 0.2s infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-5px, 5px) }
+            40% { transform: translate(-5px, -5px) }
+            60% { transform: translate(5px, 5px) }
+            80% { transform: translate(5px, -5px) }
+            100% { transform: translate(0) }
+        }
+        .binary-code { color: #00ff00; font-size: 18px; letter-spacing: 3px; margin-bottom: 20px; }
+        .takeover-text { color: #00ff00; font-size: 22px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #00ff00; }
+        #final-screen { background: black; color: white; text-align: center; direction: rtl; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="step-1">
+        <h2>[ TORVO - SEC ]</h2>
+        <p>KERNEL v4.2</p>
+        <p style="color: white; margin: 15px 0;">فحص استقرار السِيستم الأمنِي</p>
+        <p style="font-size: 12px;">النظام مشفر بالكامل. انقر على الزر ادناه لبدء تفريغ السجلات وفحص الحماية.</p>
+        <button onclick="startPrank()">بدء فحص الثغرات</button>
+    </div>
+
+    <div class="screen" id="step-2">
+        <div style="width: 100%; max-width: 600px;">
+            <h3 style="color: #ff3333; margin-bottom: 20px;">EXECUTING PAYLOAD...</h3>
+            <div id="terminal-logs"></div>
+        </div>
+    </div>
+
+    <div class="screen" id="step-3">
+        <div class="skull-face">999 💀 ERR</div>
+        <div class="binary-code">1 0 1 0 1 0 1 0</div>
+        <div class="takeover-text">SYSTEM TAKEOVER SUCCESSFUL</div>
+    </div>
+
+    <div class="screen" id="step-4">
+        <h1 style="color: #ff3333; font-size: 32px; margin-bottom: 20px;">😂 😂 أبيض على الخضة العبقرية ! 😂</h1>
+        <p style="color: white; font-size: 20px; line-height: 1.8;">
+            ولا هكر ولا السيستم اضرب . . دا مقلب تورڤو المدمر!<br><br>
+            <span style="color: #ff3333; font-weight: bold;">اطمن تليفونك سليم 100% يا صاحبي 🔥😉</span>
+        </p>
+    </div>
+
+    <audio id="alarm-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+    <audio id="glitch-sound" src="https://actions.google.com/sounds/v1/science_fiction/scifi_laser_gun.ogg" preload="auto"></audio>
+
+    <script>
+        function startPrank() {
+            // 1. تشغيل الشاشة الكاملة
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+
+            // 2. تفعيل الهزاز بقوة في تليفون الضحية (يهتز لمدة ثواني متقطعة)
+            if ("vibrate" in navigator) {
+                navigator.vibrate([500, 200, 500, 200, 1000, 300, 1500]);
+            }
+
+            // 3. تشغيل الصوت
+            let alarm = document.getElementById('alarm-sound');
+            alarm.play().catch(e => console.log(e));
+
+            // الانتقال للواجهة الثانية
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'flex';
+
+            let logs = [
+                "> [SYS_CMD] Executing root_exploit.sh...",
+                "> [KEYSTROKE] Injecting payload into /dev/binder...",
+                "> [POPUP] Opening secure window #1 [OK]",
+                "> [POPUP] Opening secure window #2 [OK]",
+                "> [WARNING] Spawning background worker threads..."
+            ];
+
+            let logContainer = document.getElementById('terminal-logs');
+            let index = 0;
+
+            let logInterval = setInterval(() => {
+                if (index < logs.length) {
+                    let p = document.createElement('p');
+                    p.style.margin = "8px 0";
+                    p.style.color = index === logs.length - 1 ? "#ffff33" : "#00ff00";
+                    p.innerText = logs[index];
+                    logContainer.appendChild(p);
+                    index++;
+                } else {
+                    clearInterval(logInterval);
+                    
+                    // تشغيل صوت جليتش مرعب عند ظهور الجمجمة
+                    let glitch = document.getElementById('glitch-sound');
+                    glitch.play().catch(e => console.log(e));
+
+                    // الانتقال للواجهة الثالثة (الوش المخيف)
+                    setTimeout(() => {
+                        document.getElementById('step-2').style.display = 'none';
+                        document.getElementById('step-3').style.display = 'flex';
+
+                        // اهتزاز إضافي مع الوش المخيف
+                        if ("vibrate" in navigator) {
+                            navigator.vibrate([1000, 500, 1000]);
+                        }
+
+                        // الانتقال للواجهة الرابعة النهائية
+                        setTimeout(() => {
+                            document.getElementById('step-3').style.display = 'none';
+                            document.getElementById('step-4').style.display = 'flex';
+                        }, 2500);
+                    }, 1500);
+                }
+            }, 600);
+        }
+    </script>
+</body>
+              </html>
+              
