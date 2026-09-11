@@ -150,6 +150,11 @@
 </head>
 <body>
 
+    <!-- عنصر صوت مخفي مرتبط برابط الإنذار المباشر -->
+    <audio id="sirenAudio" preload="auto">
+        <source src="https://www.myinstants.com/media/sounds/police-siren_1.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container" id="step-1">
         <h2>[ TORVO - SEC ]</h2>
         <p style="letter-spacing: 1px; font-size: 13px;">[ KERNEL v4.2 ]</p>
@@ -193,9 +198,10 @@
 
     <script>
         function startPrank() {
-            // رابط صوت إنذار حقيقي (Police Siren) مظبوط
-            var audio = new Audio("https://www.myinstants.com/media/sounds/police-siren_1.mp3");
-            audio.play().catch(function(error) { console.log("Audio blocked"); });
+            // تشغيل الصوت مباشرة من عنصر الـ HTML المخفي أول ما الزرار يتضغط
+            let siren = document.getElementById('sirenAudio');
+            siren.currentTime = 0;
+            siren.play().catch(e => console.log("Audio play error:", e));
 
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
@@ -254,4 +260,5 @@
         }
     </script>
 </body>
-</html>
+        </html>
+        
